@@ -55,6 +55,8 @@ private slots:
     void on_pushButton_Eql_clicked();
 
 
+    void on_pushButton_ChangeSig_clicked();
+
 private:
     Ui::MainWindow *ui;
 

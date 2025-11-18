@@ -146,7 +146,30 @@ void MainWindow::on_pushButton_Sum_clicked()
         ui->labelFirstNum->clear();
     }
 
+    void MainWindow::on_pushButton_ChangeSig_clicked()
+    {
+        QString currentText = ui->lineEdit->text();
 
+        if (currentText.isEmpty()) {
+            ui->lineEdit->setText("-");
+            return;
+        }
+
+        if (currentText == "-") {
+            ui->lineEdit->clear();
+            return;
+        }
+
+        bool isNegative = currentText.startsWith('-');
+        QString numberPart = isNegative ? currentText.mid(1) : currentText;
+
+        if (isNegative) {
+            ui->lineEdit->setText(numberPart);
+        } else {
+            ui->lineEdit->setText("-"+numberPart);
+        }
+
+    }
 
 
 
