@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include <QDoubleValidator>
+
+#include "QDebug"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -8,171 +9,86 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-     ui->lineEdit->setReadOnly(true);
+    setupConnections();
+    updateUI();
 }
 
 MainWindow::~MainWindow()
 {
-
     delete ui;
 }
 
-void MainWindow::clearInput()
+void MainWindow::setupConnections()
 {
-    ui->lineEdit->clear();
-}
+    //dog
+    connect(ui->pushButton_Num0, &QPushButton::clicked, this, &MainWindow::onDigitClicked);
+    connect(ui->pushButton_Num1, &QPushButton::clicked, this, &MainWindow::onDigitClicked);
+    connect(ui->pushButton_Num2, &QPushButton::clicked, this, &MainWindow::onDigitClicked);
+    connect(ui->pushButton_Num3, &QPushButton::clicked, this, &MainWindow::onDigitClicked);
+    connect(ui->pushButton_Num4, &QPushButton::clicked, this, &MainWindow::onDigitClicked);
+    connect(ui->pushButton_Num5, &QPushButton::clicked, this, &MainWindow::onDigitClicked);
+    connect(ui->pushButton_Num6, &QPushButton::clicked, this, &MainWindow::onDigitClicked);
+    connect(ui->pushButton_Num7, &QPushButton::clicked, this, &MainWindow::onDigitClicked);
+    connect(ui->pushButton_Num8, &QPushButton::clicked, this, &MainWindow::onDigitClicked);
+    connect(ui->pushButton_Num9, &QPushButton::clicked, this, &MainWindow::onDigitClicked);
 
-void MainWindow::on_pushButton_Clear_clicked()
-{
-    clearInput();
-    operation.clear();
-}
-
-void MainWindow::on_pushButton_Num1_clicked()
-{
-    ui->lineEdit->setText(ui->lineEdit->text()+"1");
-}
-
-
-void MainWindow::on_pushButton_Num2_clicked()
-{
-    ui->lineEdit->setText(ui->lineEdit->text()+"2");
-}
+    //op
+    connect(ui->pushButton_Sum, &QPushButton::clicked, this, &MainWindow::onOperationClicked);
+    connect(ui->pushButton_Sub, &QPushButton::clicked, this, &MainWindow::onOperationClicked);
+    connect(ui->pushButton_Mul, &QPushButton::clicked, this, &MainWindow::onOperationClicked);
+    connect(ui->pushButton_Div, &QPushButton::clicked, this, &MainWindow::onOperationClicked);
 
 
-void MainWindow::on_pushButton_Num3_clicked()
-{
-    ui->lineEdit->setText(ui->lineEdit->text()+"3");
-}
-
-
-void MainWindow::on_pushButton_Num4_clicked()
-{
-    ui->lineEdit->setText(ui->lineEdit->text()+"4");
+    //mods
+    connect(ui->pushButton_Eql, &QPushButton::clicked, this, &MainWindow::onEqualsClicked);
+    connect(ui->pushButton_Clear, &QPushButton::clicked, this, &MainWindow::onClearClicked);
+    connect(ui->pushButton_ChangeSig, &QPushButton::clicked, this, &MainWindow::onChangeSignClicked);
+    connect(ui->pushButton_Dot, &QPushButton::clicked, this, &MainWindow::onDecimalPointClicked);
 }
 
 
-void MainWindow::on_pushButton_Num5_clicked()
+void MainWindow::updateUI()
 {
-    ui->lineEdit->setText(ui->lineEdit->text()+"5");
+    ui->lineEdit->setText(calculation.getDisplayText());
+    ui->labelFirstNum->setText(calculation.getStatusText());
+
+
+    qDebug() << "Dis:" << calculation.getDisplayText();
+}
+void MainWindow::onDigitClicked()
+{
+    QString digit = qobject_cast<QPushButton*>(sender())->text();
+    calculation.pressDigit(digit);
+    updateUI();
 }
 
-
-void MainWindow::on_pushButton_Num6_clicked()
+void MainWindow::onOperationClicked()
 {
-    ui->lineEdit->setText(ui->lineEdit->text()+"6");
+    QString op = qobject_cast<QPushButton*>(sender())->text();
+    calculation.pressOperation(op);
+    updateUI();
 }
 
-
-void MainWindow::on_pushButton_Num7_clicked()
+void MainWindow::onEqualsClicked()
 {
-    ui->lineEdit->setText(ui->lineEdit->text()+"7");
+    calculation.pressEquals();
+    updateUI();
 }
 
-
-void MainWindow::on_pushButton_Num8_clicked()
+void MainWindow::onClearClicked()
 {
-    ui->lineEdit->setText(ui->lineEdit->text()+"8");
+    calculation.pressClear();
+    updateUI();
 }
 
-
-void MainWindow::on_pushButton_Num9_clicked()
+void MainWindow::onChangeSignClicked()
 {
-    ui->lineEdit->setText(ui->lineEdit->text()+"9");
+    calculation.pressChangeSign();
+    updateUI();
 }
 
-
-void MainWindow::on_pushButton_Num0_clicked()
+void MainWindow::onDecimalPointClicked()
 {
-    ui->lineEdit->setText(ui->lineEdit->text()+"0");
+    calculation.pressDecimalPoint();
+    updateUI();
 }
-
-
-void MainWindow::on_pushButton_Dot_clicked()
-{
-    QString text = ui->lineEdit->text();
-
-    if(!text.contains(".")){
-        ui->lineEdit->setText(ui->lineEdit->text()+".");
-    }
-}
-
-
-void MainWindow::on_pushButton_Sub_clicked()
-{
-    firstNum = ui->lineEdit->text().toDouble();
-    operation = "-";
-    ui->labelFirstNum->setText("First Number: " + QString::number(firstNum));
-    clearInput();
-}
-
-
-void MainWindow::on_pushButton_Mul_clicked()
-{
-    firstNum = ui->lineEdit->text().toDouble();
-    operation = "*";
-    ui->labelFirstNum->setText("First Number: " + QString::number(firstNum));
-    clearInput();
-}
-
-
-void MainWindow::on_pushButton_Div_clicked()
-{
-    firstNum = ui->lineEdit->text().toDouble();
-    operation = "/";
-    ui->labelFirstNum->setText("First Number: " + QString::number(firstNum));
-    clearInput();
-}
-
-void MainWindow::on_pushButton_Sum_clicked()
-{
-    firstNum = ui->lineEdit->text().toDouble();
-    operation = "+";
-    ui->labelFirstNum->setText("First Number: " + QString::number(firstNum));
-    clearInput();
-}
-
-    void MainWindow::on_pushButton_Eql_clicked()
-    {
-        double secondNum = ui->lineEdit->text().toDouble();
-        double result = 0 ;
-
-        if (operation == "+") result  = firstNum + secondNum;
-        else if (operation == "-") result = firstNum + secondNum;
-        else if (operation == "*") result = firstNum * secondNum;
-        else if (operation == "/" && secondNum != 0) result = firstNum / secondNum;
-
-        ui->lineEdit->setText(QString::number(result));
-        ui->labelFirstNum->clear();
-    }
-
-    void MainWindow::on_pushButton_ChangeSig_clicked()
-    {
-        QString currentText = ui->lineEdit->text();
-
-        if (currentText.isEmpty()) {
-            ui->lineEdit->setText("-");
-            return;
-        }
-
-        if (currentText == "-") {
-            ui->lineEdit->clear();
-            return;
-        }
-
-        bool isNegative = currentText.startsWith('-');
-        QString numberPart = isNegative ? currentText.mid(1) : currentText;
-
-        if (isNegative) {
-            ui->lineEdit->setText(numberPart);
-        } else {
-            ui->lineEdit->setText("-"+numberPart);
-        }
-
-    }
-
-
-
-
-
-

@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-5e923561427851bbbe6a.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "calc1",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "calc1::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-calc1-Debug-6972057453552e3db5ef.json",
+					"name" : "calc1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "calc1_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-calc1_autogen-Debug-d32b4bb3ff2f841b88ea.json",
+					"name" : "calc1_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "calc1_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-calc1_autogen_timestamp_deps-Debug-a57f8c6f9e0862559a8d.json",
+					"name" : "calc1_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/bakzelc/calcF/build/Desktop-Debug",
+		"source" : "/home/bakzelc/calcF"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}
