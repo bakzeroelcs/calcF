@@ -1,4 +1,5 @@
 #include "calculation.h"
+#include <qdebug.h>
 
 Calculation::Calculation()
     : firstNum(0.0),
@@ -39,6 +40,115 @@ void Calculation::pressOperation(const QString& op)
         waitingForSecondNumber = true;
     }
 }
+
+//scobli
+void Calculation::saveContext()
+{
+    savedNumbers.push(firstNum);
+    savedOperations.push(operation);
+}
+
+void Calculation::restoreContext()
+{
+    if (!savedNumbers.isEmpty() && !savedOperations.isEmpty()) {
+        firstNum = savedNumbers.pop();
+        operation = savedOperations.pop();
+    }
+}
+
+void Calculation::pressLPar()
+{
+    CalcContext ctx;
+    ctx.firstNum = firstNum;
+    ctx.operation = operation;
+    ctx.currentInput = currentInput;
+    ctx.waitingForSecondNumber = waitingForSecondNumber;
+
+    /*qDebug() << "SAVE: firstNum=" << ctx.firstNum
+             << ", op=" << ctx.operation
+             << ", input=" << ctx.currentInput;  */
+
+    contextStack.push(ctx);
+
+    firstNum = 0.0;
+    operation = "";
+    currentInput = "";
+    waitingForSecondNumber = false;
+}
+
+void Calculation::pressRPar()
+{
+    if (contextStack.isEmpty()) {
+            currentInput = "Ошибка: лишняя )";
+            updateDisplay();
+
+            firstNum = 0.0;
+            operation = "";
+            waitingForSecondNumber = false;
+            return;
+    }
+
+    if (currentInput.isEmpty()) {
+        currentInput = "Ошибка: пустые ()";
+        updateDisplay();
+        contextStack.pop();
+        return;
+    }
+
+    pressEquals();  //Выражение внутри скобок
+
+
+    CalcContext ctx = contextStack.pop();
+
+
+    // Операция внешнего поля
+    if (!currentInput.startsWith("Error")) {
+        double innerResult = currentInput.toDouble();
+        double outerResult = 0.0;
+        QString errorMessage;
+
+        if (ctx.operation == "+") {
+            outerResult = ctx.firstNum + innerResult;
+        } else if (ctx.operation == "-") {
+            outerResult = ctx.firstNum - innerResult;
+        } else if (ctx.operation == "*") {
+            if (std::abs(ctx.firstNum) > 1e150 || std::abs(innerResult) > 1e150) {
+                errorMessage = "Error: Overflow";
+            } else {
+                outerResult = ctx.firstNum * innerResult;
+            }
+        } else if (ctx.operation == "/") {
+            if (innerResult == 0.0) {
+                errorMessage = "Division by zero";
+            } else {
+                outerResult = ctx.firstNum / innerResult;
+            }
+        }
+
+        if (errorMessage.isEmpty()) {
+            currentInput = QString::number(outerResult);
+            // Сохраняем результат как новое firstNum для последующих операций
+            firstNum = outerResult;
+            operation = "";  // Операция применена
+            waitingForSecondNumber = false;
+        } else {
+            currentInput = errorMessage;
+            operation = "";
+        }
+    } else {
+        //При ошибке внутри скобок
+        operation = "";
+    }
+
+    updateDisplay();
+}
+
+/* 111 Код касательно скобок выше и сохранение контекста до/внутри скобок для вычислений будем придумывать что в скобках будет 1число
+пока без вложенных скобок, рекурсия, пока не до конца осознал как сделать оценку для операций и скобок, наверное через токены и веса... наверное..
+тогда он сможет еще и думать так что бы в стек запиливать много операций и он сам решал где * важнее +-))
+*/
+
+
 
 void Calculation::pressEquals()
 {
@@ -137,5 +247,5 @@ QString Calculation::getStatusText() const
 
 void Calculation::updateDisplay()
 {
-    // Заглушка — обновление происходит через геттеры
+    // Заглушка - как будто если добавлять функции придется даже использовать)
 }

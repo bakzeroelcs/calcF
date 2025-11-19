@@ -9,6 +9,7 @@ calc1_autogen/timestamp: \
 	/home/bakzelc/calcF/main.cpp \
 	/home/bakzelc/calcF/mainwindow.cpp \
 	/home/bakzelc/calcF/mainwindow.h \
+	/usr/include/QtCore/QStack \
 	/usr/include/QtCore/QString \
 	/usr/include/QtCore/q17memory.h \
 	/usr/include/QtCore/q20functional.h \
@@ -92,6 +93,7 @@ calc1_autogen/timestamp: \
 	/usr/include/QtCore/qsharedpointer_impl.h \
 	/usr/include/QtCore/qsize.h \
 	/usr/include/QtCore/qspan.h \
+	/usr/include/QtCore/qstack.h \
 	/usr/include/QtCore/qstdlibdetection.h \
 	/usr/include/QtCore/qstring.h \
 	/usr/include/QtCore/qstringalgorithms.h \

@@ -25,6 +25,8 @@ private slots:
     void onChangeSignClicked();
     void onDecimalPointClicked();
 
+    void onLParClicked();
+    void onRParClicked();
 private:
     Ui::MainWindow *ui;
     Calculation calculation;  // Экземпляр класса Calculation

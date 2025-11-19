@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
     setupConnections();
     updateUI();
@@ -44,6 +45,8 @@ void MainWindow::setupConnections()
     connect(ui->pushButton_Clear, &QPushButton::clicked, this, &MainWindow::onClearClicked);
     connect(ui->pushButton_ChangeSig, &QPushButton::clicked, this, &MainWindow::onChangeSignClicked);
     connect(ui->pushButton_Dot, &QPushButton::clicked, this, &MainWindow::onDecimalPointClicked);
+    connect(ui->pushButton_LPar, &QPushButton::clicked, this, &MainWindow::onLParClicked);
+    connect(ui->pushButton_RPar, &QPushButton::clicked, this, &MainWindow::onRParClicked);
 }
 
 
@@ -90,5 +93,17 @@ void MainWindow::onChangeSignClicked()
 void MainWindow::onDecimalPointClicked()
 {
     calculation.pressDecimalPoint();
+    updateUI();
+}
+
+void MainWindow::onLParClicked()
+{
+    calculation.pressLPar();
+    updateUI();
+}
+
+void MainWindow::onRParClicked()
+{
+    calculation.pressRPar();
     updateUI();
 }

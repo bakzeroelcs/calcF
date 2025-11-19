@@ -48,6 +48,8 @@ public:
     QPushButton *pushButton_Eql;
     QLabel *labelFirstNum;
     QPushButton *pushButton_ChangeSig;
+    QPushButton *pushButton_LPar;
+    QPushButton *pushButton_RPar;
     QMenuBar *menubar;
     QMenu *menuCalculation;
     QStatusBar *statusbar;
@@ -56,7 +58,14 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(321, 345);
+        MainWindow->resize(320, 340);
+        QSizePolicy sizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
+        MainWindow->setSizePolicy(sizePolicy);
+        MainWindow->setMinimumSize(QSize(320, 340));
+        MainWindow->setMaximumSize(QSize(320, 340));
         actionExit = new QAction(MainWindow);
         actionExit->setObjectName("actionExit");
         centralwidget = new QWidget(MainWindow);
@@ -121,10 +130,16 @@ public:
         pushButton_ChangeSig = new QPushButton(centralwidget);
         pushButton_ChangeSig->setObjectName("pushButton_ChangeSig");
         pushButton_ChangeSig->setGeometry(QRect(210, 260, 91, 27));
+        pushButton_LPar = new QPushButton(centralwidget);
+        pushButton_LPar->setObjectName("pushButton_LPar");
+        pushButton_LPar->setGeometry(QRect(10, 260, 81, 27));
+        pushButton_RPar = new QPushButton(centralwidget);
+        pushButton_RPar->setObjectName("pushButton_RPar");
+        pushButton_RPar->setGeometry(QRect(110, 260, 91, 27));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 321, 24));
+        menubar->setGeometry(QRect(0, 0, 320, 24));
         menuCalculation = new QMenu(menubar);
         menuCalculation->setObjectName("menuCalculation");
         MainWindow->setMenuBar(menubar);
@@ -162,6 +177,8 @@ public:
         pushButton_Eql->setText(QCoreApplication::translate("MainWindow", "=", nullptr));
         labelFirstNum->setText(QString());
         pushButton_ChangeSig->setText(QCoreApplication::translate("MainWindow", "+/-", nullptr));
+        pushButton_LPar->setText(QCoreApplication::translate("MainWindow", "(", nullptr));
+        pushButton_RPar->setText(QCoreApplication::translate("MainWindow", ")", nullptr));
         menuCalculation->setTitle(QCoreApplication::translate("MainWindow", "Calculation", nullptr));
     } // retranslateUi
 
