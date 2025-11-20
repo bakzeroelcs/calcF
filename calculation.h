@@ -28,6 +28,10 @@ public:
     void pressLPar();
     void pressRPar();
 
+    void pressSqrt();
+    void pressAbs();
+    void pressLog();
+
     QString getDisplayText() const;
     QString getStatusText() const;
 
@@ -41,6 +45,16 @@ private:
     QStack<double> savedNumbers;
     QStack<QString> savedOperations;
     QStack<CalcContext> contextStack;
+
+    enum MathOp {
+        Normal,
+        Sqrt,
+        Abs,
+        Pow,
+        Log
+    };
+    MathOp mathOp = Normal;
+
     void saveContext();
     void restoreContext();
 

@@ -38,7 +38,10 @@ void MainWindow::setupConnections()
     connect(ui->pushButton_Sub, &QPushButton::clicked, this, &MainWindow::onOperationClicked);
     connect(ui->pushButton_Mul, &QPushButton::clicked, this, &MainWindow::onOperationClicked);
     connect(ui->pushButton_Div, &QPushButton::clicked, this, &MainWindow::onOperationClicked);
-
+    connect(ui->pushButton_Pow, &QPushButton::clicked, this, &MainWindow::onOperationClicked);
+    connect(ui->pushButton_Sqrt,&QPushButton::clicked, this, &MainWindow::onMathFunctionClicked);
+    connect(ui->pushButton_Log, &QPushButton::clicked, this, &MainWindow::onMathFunctionClicked);
+    connect(ui->pushButton_Abs, &QPushButton::clicked, this, &MainWindow::onMathFunctionClicked);
 
     //mods
     connect(ui->pushButton_Eql, &QPushButton::clicked, this, &MainWindow::onEqualsClicked);
@@ -69,6 +72,24 @@ void MainWindow::onOperationClicked()
 {
     QString op = qobject_cast<QPushButton*>(sender())->text();
     calculation.pressOperation(op);
+    updateUI();
+}
+
+void MainWindow::onMathFunctionClicked()
+{
+    QPushButton* btn = qobject_cast<QPushButton*>(sender());
+    if (!btn) return;
+
+    QString text = btn->text();
+
+    if (text == "sqrt") {
+        calculation.pressSqrt();
+    } else if (text == "|x|") {
+        calculation.pressAbs();
+    } else if (text == "log10") {
+        calculation.pressLog();
+    }
+
     updateUI();
 }
 

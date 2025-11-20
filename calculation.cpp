@@ -34,6 +34,16 @@ void Calculation::pressDecimalPoint()
 
 void Calculation::pressOperation(const QString& op)
 {
+    if (op == "x^y") {
+        if (!currentInput.isEmpty()) {
+            firstNum = currentInput.toDouble();
+            mathOp = Pow;
+            operation = "x^y";
+            waitingForSecondNumber = true;
+        }
+        return;
+    }
+
     if (!currentInput.isEmpty()) {
         firstNum = currentInput.toDouble();
         operation = op.trimmed();
@@ -148,11 +158,85 @@ void Calculation::pressRPar()
 тогда он сможет еще и думать так что бы в стек запиливать много операций и он сам решал где * важнее +-))
 */
 
+void Calculation::pressSqrt()
+{
+    if (currentInput.isEmpty()) {
+        currentInput = "0";
+    }
+
+    bool ok;
+    double value = currentInput.toDouble(&ok);
+    if (!ok) {
+        currentInput = "Error";
+        updateDisplay();
+        return;
+    }
+
+    if (value < 0) {
+        currentInput = "Error: √<0";
+        updateDisplay();
+        return;
+    }
+
+    double result = std::sqrt(value);
+    currentInput = QString::number(result);
+    firstNum = result;
+    operation = "";
+    mathOp = Normal;
+    waitingForSecondNumber = false;
+    updateDisplay();
+}
+
+void Calculation::pressLog()
+{
+    if (currentInput.isEmpty()) {
+        currentInput = "0";
+    }
+
+    bool ok;
+    double value = currentInput.toDouble(&ok);
+    if (!ok || value <= 0) {
+        currentInput = "Error: log≤0";
+        updateDisplay();
+        return;
+    }
+
+    double result = std::log10(value);
+    currentInput = QString::number(result);
+    firstNum = result;
+    operation = "";
+    mathOp = Normal;
+    waitingForSecondNumber = false;
+    updateDisplay();
+}
+
+void Calculation::pressAbs()
+{
+    if (currentInput.isEmpty()) {
+        currentInput = "0";
+    }
+
+    bool ok;
+    double value = currentInput.toDouble(&ok);
+    if (!ok) {
+        currentInput = "Error";
+        updateDisplay();
+        return;
+    }
+
+    double result = std::abs(value);
+    currentInput = QString::number(result);
+    firstNum = result;
+    operation = "";
+    mathOp = Normal;
+    waitingForSecondNumber = false;
+    updateDisplay();
+}
 
 
 void Calculation::pressEquals()
 {
-    if (operation.isEmpty()) {
+    if (operation.isEmpty() && mathOp == Normal) {
         return;
     }
 
@@ -174,8 +258,16 @@ void Calculation::pressEquals()
 
     double result = 0.0;
     QString errorMessage;
-
-    if (operation == "+") {
+    if (mathOp == Pow) {
+        if (std::abs(firstNum) > 1e150 || std::abs(secondNum) > 150) {
+            errorMessage = "Error: Overflow";
+        } else {
+            result = std::pow(firstNum, secondNum);
+            if (std::isinf(result)) {
+                errorMessage = "Error: Overflow";
+            }
+        }
+    } else if (operation == "+") {
         result = firstNum + secondNum;
     } else if (operation == "-") {
         result = firstNum - secondNum;
@@ -199,11 +291,13 @@ void Calculation::pressEquals()
         currentInput = QString::number(result);
         firstNum = 0.0; // просто чтоб красиво было, очистить лейбел от последнего действия
         operation = "";
+        mathOp = Normal;
         waitingForSecondNumber = false;
     } else {
         currentInput = errorMessage;
     }
 
+    mathOp = Normal;
     waitingForSecondNumber = false;
     updateDisplay();
 }
@@ -214,6 +308,7 @@ void Calculation::pressClear()
     firstNum = 0.0;
     operation = "";
     waitingForSecondNumber = false;
+    mathOp = Normal;
     updateDisplay();
 }
 
@@ -239,10 +334,17 @@ QString Calculation::getDisplayText() const
 
 QString Calculation::getStatusText() const
 {
-    if (operation.isEmpty()) {
-        return "";
+    if (!operation.isEmpty()) {
+        return "First Number: " + QString::number(firstNum) + " " + operation;
     }
-    return "First Number: " + QString::number(firstNum) + " " + operation;
+    if (mathOp != Normal) {
+        return QString("Math: ") +
+               (mathOp == Sqrt  ? "sqrt" :
+                mathOp == Abs   ? "|x|" :
+                mathOp == Pow   ? "x^y" :
+                mathOp == Log ? "log" : "?");
+    }
+    return "";
 }
 
 void Calculation::updateDisplay()

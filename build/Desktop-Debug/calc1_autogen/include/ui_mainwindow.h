@@ -50,6 +50,10 @@ public:
     QPushButton *pushButton_ChangeSig;
     QPushButton *pushButton_LPar;
     QPushButton *pushButton_RPar;
+    QPushButton *pushButton_Sqrt;
+    QPushButton *pushButton_Pow;
+    QPushButton *pushButton_Abs;
+    QPushButton *pushButton_Log;
     QMenuBar *menubar;
     QMenu *menuCalculation;
     QStatusBar *statusbar;
@@ -58,14 +62,14 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(320, 340);
+        MainWindow->resize(320, 370);
         QSizePolicy sizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
         MainWindow->setSizePolicy(sizePolicy);
-        MainWindow->setMinimumSize(QSize(320, 340));
-        MainWindow->setMaximumSize(QSize(320, 340));
+        MainWindow->setMinimumSize(QSize(320, 370));
+        MainWindow->setMaximumSize(QSize(320, 370));
         actionExit = new QAction(MainWindow);
         actionExit->setObjectName("actionExit");
         centralwidget = new QWidget(MainWindow);
@@ -136,6 +140,18 @@ public:
         pushButton_RPar = new QPushButton(centralwidget);
         pushButton_RPar->setObjectName("pushButton_RPar");
         pushButton_RPar->setGeometry(QRect(110, 260, 91, 27));
+        pushButton_Sqrt = new QPushButton(centralwidget);
+        pushButton_Sqrt->setObjectName("pushButton_Sqrt");
+        pushButton_Sqrt->setGeometry(QRect(10, 290, 71, 27));
+        pushButton_Pow = new QPushButton(centralwidget);
+        pushButton_Pow->setObjectName("pushButton_Pow");
+        pushButton_Pow->setGeometry(QRect(80, 290, 71, 27));
+        pushButton_Abs = new QPushButton(centralwidget);
+        pushButton_Abs->setObjectName("pushButton_Abs");
+        pushButton_Abs->setGeometry(QRect(150, 290, 71, 27));
+        pushButton_Log = new QPushButton(centralwidget);
+        pushButton_Log->setObjectName("pushButton_Log");
+        pushButton_Log->setGeometry(QRect(220, 290, 81, 27));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -179,6 +195,10 @@ public:
         pushButton_ChangeSig->setText(QCoreApplication::translate("MainWindow", "+/-", nullptr));
         pushButton_LPar->setText(QCoreApplication::translate("MainWindow", "(", nullptr));
         pushButton_RPar->setText(QCoreApplication::translate("MainWindow", ")", nullptr));
+        pushButton_Sqrt->setText(QCoreApplication::translate("MainWindow", "sqrt", nullptr));
+        pushButton_Pow->setText(QCoreApplication::translate("MainWindow", "x^y", nullptr));
+        pushButton_Abs->setText(QCoreApplication::translate("MainWindow", "|x|", nullptr));
+        pushButton_Log->setText(QCoreApplication::translate("MainWindow", "log10", nullptr));
         menuCalculation->setTitle(QCoreApplication::translate("MainWindow", "Calculation", nullptr));
     } // retranslateUi
 

@@ -27,9 +27,11 @@ private slots:
 
     void onLParClicked();
     void onRParClicked();
+    void onMathFunctionClicked();
+
 private:
     Ui::MainWindow *ui;
-    Calculation calculation;  // Экземпляр класса Calculation
+    Calculation calculation; // Экземпляр класса Calculation
 
     void setupConnections();
     void updateUI();
